@@ -14,11 +14,11 @@ def download(page_address, output_dir):
 
 def make_file_path(page_address, output_dir):
     address_without_schema = page_address.split('//')[1]
-    splited_words_in_address = re.split(r'[^a-zA-Z0-9]', address_without_schema)
-    file_name = '-'.join(splited_words_in_address) + '.html'
+    splited_address = re.split(r'[^a-zA-Z0-9]', address_without_schema)
+    file_name = '-'.join(splited_address) + '.html'
     file_path = os.path.join(output_dir, file_name)
-# return file_path не забыть вернуть этот return и удалить следующий
-    return '/var/tmp/ru-hexlet-io-courses.html'
+    return file_path
+#    return '/var/tmp/ru-hexlet-io-courses.html'
 
 
 def is_dir_exist(output_dir):
