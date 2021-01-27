@@ -20,4 +20,4 @@ test:
 	poetry run pytest tests -vv
 
 test-coverage:
-	poetry run pytest --cov=page-loader --cov-report xml
+	poetry run pytest --cov=page_loader --cov-report xml
