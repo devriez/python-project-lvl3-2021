@@ -16,5 +16,6 @@ def main():
         args.output_dir = os.getcwd()
     return download(args.file_path, args.output_dir)
 
+
 if __name__ == '__main__':
     main()
