@@ -40,6 +40,8 @@ def make_path_to_image(page_address, image_path):
     domain = address_without_schema.split('/')[0]
     splitted_domain = re.split(r'[^a-zA-Z0-9]', domain)
     image_path_without_ext, extension = os.path.splitext(image_path)
+    print('image_path_without_ext', image_path_without_ext)
     splitted_image_path = re.split(r'[^a-zA-Z0-9]', image_path_without_ext)
-    path_to_image = '-'.join(splitted_domain + splitted_image_path) + extension
+    print('splitted_image_path', splitted_image_path)
+    path_to_image = ('-'.join(splitted_domain) + '-'.join(splitted_image_path) + extension)
     return path_to_image
