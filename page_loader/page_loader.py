@@ -14,9 +14,9 @@ def download(page_address, output_dir):
 
 def make_file_path(page_address, output_dir):
     address_without_schema = page_address.split('//')[1]
-    splited_address = re.split(r'[^a-zA-Z0-9]', address_without_schema)
-    file_name = '-'.join(splited_address) + '.html'
-    file_path = os.path.join(output_dir, file_name)
+    splitted_address = re.split(r'[^a-zA-Z0-9]', address_without_schema)
+    page_name = '-'.join(splitted_address) + '.html'
+    file_path = os.path.join(output_dir, page_name)
     return file_path
 #    return '/var/tmp/ru-hexlet-io-courses.html'
 
@@ -28,3 +28,18 @@ def is_dir_exist(output_dir):
 def read_page(url):
     page = requests.get(url)
     return page.text
+
+
+def make_path_to_dir_with_images(file_path):
+    path_without_ext, _ = os.path.splitext(file_path)
+    return path_without_ext + '_files'
+
+
+def make_path_to_image(page_address, image_path):
+    address_without_schema = page_address.split('//')[1]
+    domain = address_without_schema.split('/')[0]
+    splitted_domain = re.split(r'[^a-zA-Z0-9]', domain)
+    image_path_without_ext, extension = os.path.splitext(image_path)
+    splitted_image_path = re.split(r'[^a-zA-Z0-9]', image_path_without_ext)
+    path_to_image = '-'.join(splitted_domain + splitted_image_path) + extension
+    return path_to_image
