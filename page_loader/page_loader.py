@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 import re
 
 
-# def download(page_address, output_dir):
+def download(page_address, output_dir):
 #     if is_dir_exist(output_dir):
 #         file_path = make_file_path(page_address, output_dir)
 #         file_html = read_page(page_address)
@@ -12,7 +12,7 @@ import re
 #         # with open(file_path, 'w+') as file:
 #         #     file.write(read_page(page_address))
 #
-#         return file_path
+    return file_path
 
 
 # тест написан

@@ -57,7 +57,7 @@ def test_make_image_url_absolut():
     assert CORRECT_IMAGE_URL_ABSOLUTE == img_url_absolut
 
 
-def test_save_image(requests_mock):
+def test_save_image():
     img_url = 'https://en.wikipedia.org/wiki/Main_Page#/media/File:RE_Kaja_Kallas.jpg'
     with tempfile.TemporaryDirectory() as tmpdir_for_test:
         image_file_path = os.path.join(tmpdir_for_test, 'test.jpeg')
