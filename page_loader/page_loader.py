@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 import re
 
 
-# def download(page_address, output_dir):
+def download(page_address, output_dir):
 #     if is_dir_exist(output_dir):
 #         file_path = make_file_path(page_address, output_dir)
 #         file_html = read_page(page_address)
@@ -12,7 +12,7 @@ import re
 #         # with open(file_path, 'w+') as file:
 #         #     file.write(read_page(page_address))
 #
-#         return file_path
+         return file_path
 
 
 # тест написан
@@ -66,11 +66,11 @@ def make_image_file_name(page_address, image_path):
     domain_kebab_case = make_domain_kebab_case_name(page_address)
     image_path_without_ext, extension = os.path.splitext(image_path)
     image_path_kebab_case = make_kebab_case_name(image_path_without_ext)
-    image_name = domain_kebab_case + image_path_kebab_case + extension
+    image_name = domain_kebab_case + '-' + image_path_kebab_case + extension
     return image_name
 
 
 # test written
 def make_image_url_absolut(page_url, image_url_relative):
-    domain_with_scheme = page_url - urlparse(page_url).path
-    return os.path.join(domain_with_scheme, image_url_relative)
+    domain_with_scheme = urlparse(page_url).scheme + '://' + urlparse(page_url).netloc
+    return (domain_with_scheme + image_url_relative)
