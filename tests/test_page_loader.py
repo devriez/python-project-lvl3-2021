@@ -1,7 +1,7 @@
 import os
 from page_loader.page_loader import make_page_file_name
 from page_loader.page_loader import is_dir_exist
-from page_loader.page_loader import download
+#from page_loader.page_loader import download
 from page_loader.page_loader import make_image_file_name
 from page_loader.page_loader import make_name_dir_with_images
 from page_loader.page_loader import make_kebab_case_name

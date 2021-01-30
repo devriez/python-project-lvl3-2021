@@ -66,14 +66,14 @@ def make_image_file_name(page_address, image_path):
     domain_kebab_case = make_domain_kebab_case_name(page_address)
     image_path_without_ext, extension = os.path.splitext(image_path)
     image_path_kebab_case = make_kebab_case_name(image_path_without_ext)
-    image_name = domain_kebab_case + image_path_kebab_case + extension
+    image_name = domain_kebab_case + '-' + image_path_kebab_case + extension
     return image_name
 
 
 # test written
 def make_image_url_absolut(page_url, image_url_relative):
-    domain_with_scheme = page_url - urlparse(page_url).path
-    return os.path.join(domain_with_scheme, image_url_relative)
+    domain_with_scheme = urlparse(page_url).scheme + '://' + urlparse(page_url).netloc
+    return (domain_with_scheme + image_url_relative)
 
 
 def save_image(img_url, img_path):
