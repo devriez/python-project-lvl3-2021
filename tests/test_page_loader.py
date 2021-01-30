@@ -3,12 +3,14 @@ from page_loader.page_loader import make_page_file_name
 from page_loader.page_loader import is_dir_exist
 #from page_loader.page_loader import download
 from page_loader.page_loader import make_image_file_name
-from page_loader.page_loader import make_name_dir_with_images
+from page_loader.page_loader import make_dir_with_files_name
 from page_loader.page_loader import make_kebab_case_name
 from page_loader.page_loader import make_image_url_absolut
 from page_loader.page_loader import save_image
+from page_loader.page_loader import change_img_links_and_save
 import tempfile
 import requests_mock
+from bs4 import BeautifulSoup
 
 
 def test_make_page_file_name():
@@ -17,10 +19,10 @@ def test_make_page_file_name():
     assert PAGE_FILE_NAME_CORRECT == page_file_name
 
 
-def test_make_name_dir_with_images():
+def test_make_dir_with_files_name():
     CORRECT_NAME_DIR_WITH_IMAGES = 'ru-hexlet-io-courses_files'
     file_name = 'ru-hexlet-io-courses.html'
-    assert CORRECT_NAME_DIR_WITH_IMAGES == make_name_dir_with_images(file_name)
+    assert CORRECT_NAME_DIR_WITH_IMAGES == make_dir_with_files_name(file_name)
 
 
 def test_is_dir_exist():
@@ -63,3 +65,15 @@ def test_save_image():
         image_file_path = os.path.join(tmpdir_for_test, 'test.jpeg')
         save_image(img_url, image_file_path)
         assert os.path.isfile(image_file_path)
+
+
+def test_change_img_links_and_save():
+    page_url = 'https://en.wikipedia.org/wiki/Main_Page#'
+    with open('fixtures/page.htm') as test_page:
+        test_html = test_page.read()
+    soup = BeautifulSoup(test_html, 'html.parser')
+    with tempfile.TemporaryDirectory() as tmpdir_for_test:
+        soup = change_img_links_and_save(soup, page_url, tmpdir_for_test)
+    with open('fixtures/page_with_new_img_paths.html') as test_page:
+        correct_html = test_page.read()
+    assert correct_html == soup.prettify(formatter="html5")

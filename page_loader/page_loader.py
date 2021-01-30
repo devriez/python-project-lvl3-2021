@@ -2,17 +2,23 @@ import os
 import requests
 from urllib.parse import urlparse
 import re
+from bs4 import BeautifulSoup
 
 
-def download(page_address, output_dir):
-#     if is_dir_exist(output_dir):
-#         file_path = make_file_path(page_address, output_dir)
-#         file_html = read_page(page_address)
-#
-#         # with open(file_path, 'w+') as file:
-#         #     file.write(read_page(page_address))
-#
-    return file_path
+def download(page_url, output_dir):
+    if is_dir_exist(output_dir):
+        html_doc = read_page(page_url)
+
+        page_file_name = make_page_file_name(page_url)
+        page_file_path = make_path(page_file_name, output_dir)
+
+        soup = BeautifulSoup(html_doc, 'html.parser')
+        soup = change_img_links_and_save(soup, page_url, output_dir)
+
+        with open(page_file_path, "w") as f:
+            f.write(soup.prettify(formatter="html5"))
+
+        return page_file_path
 
 
 # тест написан
@@ -32,9 +38,14 @@ def make_path(name, root_dir):
 
 
 # тест написан
-def make_name_dir_with_images(page_file_name):
-    path_without_ext, _ = os.path.splitext(page_file_name)
-    return path_without_ext + '_files'
+def make_dir_with_files_name(page_address):
+    netloc = urlparse(page_address).netloc
+    path = urlparse(page_address).path
+    splitted_netloc = netloc.split('.')
+    netloc_kebab_case = '-'.join(splitted_netloc)
+    splitted_address = (netloc_kebab_case + path).split('/')
+    dir_name = '-'.join(splitted_address) + '_files'
+    return dir_name
 
 
 # тест написан
@@ -73,10 +84,25 @@ def make_image_file_name(page_address, image_path):
 # test written
 def make_image_url_absolut(page_url, image_url_relative):
     domain_with_scheme = urlparse(page_url).scheme + '://' + urlparse(page_url).netloc
-    return (domain_with_scheme + image_url_relative)
+    return domain_with_scheme + image_url_relative
 
 
+# test written
 def save_image(img_url, img_path):
     p = requests.get(img_url)
     with open(img_path, "wb") as out:
         out.write(p.content)
+
+
+def change_img_links_and_save(soup, page_url, output_dir):
+    dir_with_files_name = make_dir_with_files_name(page_url)
+    dir_with_files_path = make_path(dir_with_files_name, output_dir)
+    for image_tag in soup.find_all('img'):
+        image_url_relative = image_tag.get('href')
+        if len(urlparse(image_url_relative).netloc) == 0:
+            img_url = make_image_url_absolut(page_url, image_url_relative)
+            img_file_name = make_image_file_name(page_url, image_url_relative)
+            img_path = make_path(img_file_name, dir_with_files_path)
+            save_image(img_url, img_path)
+            image_tag['href'] = make_path(img_file_name, dir_with_files_name)
+    return soup
