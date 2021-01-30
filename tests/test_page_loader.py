@@ -6,6 +6,7 @@ from page_loader.page_loader import make_image_file_name
 from page_loader.page_loader import make_name_dir_with_images
 from page_loader.page_loader import make_kebab_case_name
 from page_loader.page_loader import make_image_url_absolut
+from page_loader.page_loader import save_image
 import tempfile
 import requests_mock
 
@@ -54,3 +55,11 @@ def test_make_image_url_absolut():
     IMAGE_PATH = '/assets/professions/nodejs.png'
     img_url_absolut = make_image_url_absolut(PAGE_URL, IMAGE_PATH)
     assert CORRECT_IMAGE_URL_ABSOLUTE == img_url_absolut
+
+
+def test_save_image(requests_mock):
+    img_url = 'https://en.wikipedia.org/wiki/Main_Page#/media/File:RE_Kaja_Kallas.jpg'
+    with tempfile.TemporaryDirectory() as tmpdir_for_test:
+        image_file_path = os.path.join(tmpdir_for_test, 'test.jpeg')
+        save_image(img_url, image_file_path)
+        assert os.path.isfile(image_file_path)

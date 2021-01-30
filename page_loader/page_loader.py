@@ -74,3 +74,9 @@ def make_image_file_name(page_address, image_path):
 def make_image_url_absolut(page_url, image_url_relative):
     domain_with_scheme = page_url - urlparse(page_url).path
     return os.path.join(domain_with_scheme, image_url_relative)
+
+
+def save_image(img_url, img_path):
+    p = requests.get(img_url)
+    with open(img_path, "wb") as out:
+        out.write(p.content)
