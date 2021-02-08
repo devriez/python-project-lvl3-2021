@@ -39,8 +39,11 @@ def make_path(name, root_dir):
 
 # тест написан
 def make_dir_with_files_name(page_address):
+    print('page_address', page_address)
     netloc = urlparse(page_address).netloc
+    print('netloc', netloc)
     path = urlparse(page_address).path
+    print('path', path)
     splitted_netloc = netloc.split('.')
     netloc_kebab_case = '-'.join(splitted_netloc)
     splitted_address = (netloc_kebab_case + path).split('/')
@@ -96,13 +99,17 @@ def save_image(img_url, img_path):
 
 def change_img_links_and_save(soup, page_url, output_dir):
     dir_with_files_name = make_dir_with_files_name(page_url)
+    print('dir_with_files_name', dir_with_files_name)
     dir_with_files_path = make_path(dir_with_files_name, output_dir)
+    os.mkdir(dir_with_files_path)
     for image_tag in soup.find_all('img'):
-        image_url_relative = image_tag.get('href')
+        image_url_relative = image_tag.get('src')
         if len(urlparse(image_url_relative).netloc) == 0:
             img_url = make_image_url_absolut(page_url, image_url_relative)
+            print('img_url', img_url)
             img_file_name = make_image_file_name(page_url, image_url_relative)
+            print('img_file_name', img_file_name)
             img_path = make_path(img_file_name, dir_with_files_path)
             save_image(img_url, img_path)
-            image_tag['href'] = make_path(img_file_name, dir_with_files_name)
+            image_tag['src'] = make_path(img_file_name, dir_with_files_name)
     return soup

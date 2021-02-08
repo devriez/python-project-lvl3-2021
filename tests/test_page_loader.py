@@ -11,7 +11,8 @@ from page_loader.page_loader import change_img_links_and_save
 import tempfile
 import requests_mock
 from bs4 import BeautifulSoup
-import filecamp
+import filecmp
+# import webbrowser
 
 
 def test_make_page_file_name():
@@ -22,7 +23,7 @@ def test_make_page_file_name():
 
 def test_make_dir_with_files_name():
     CORRECT_NAME_DIR_WITH_IMAGES = 'ru-hexlet-io-courses_files'
-    file_name = 'ru-hexlet-io-courses.html'
+    file_name =  'https://ru.hexlet.io/courses'
     assert CORRECT_NAME_DIR_WITH_IMAGES == make_dir_with_files_name(file_name)
 
 
@@ -61,23 +62,27 @@ def test_make_image_url_absolut():
 
 
 def test_save_image():
-    img_url = 'https://en.wikipedia.org/wiki/Elizabeth_Raffald#/media/File:Elizabeth_Raffald_(cropped).jpg'
+    img_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Elizabeth_Raffald_%28cropped%29.jpg/800px-Elizabeth_Raffald_%28cropped%29.jpg'
 
     with tempfile.TemporaryDirectory() as tmpdir_for_test:
         image_file_path = os.path.join(tmpdir_for_test, 'test.jpeg')
         save_image(img_url, image_file_path)
+        save_image(img_url, 'tests/fixtures/test_file_downloaded.jpeg')
         assert os.path.isfile(image_file_path)
-        assert filecmp.cmp(image_file_path, '/fixtures/test_file.jpg', shallow=True)
-        assert filecmp.cmp(image_file_path, '/fixtures/test_file.jpg', shallow=False)
+      #  print("Текущая деректория:", os.getcwd())
+      #  os.system('tests/fixtures/test_file2.jpg')
+      #  webbrowser.open('tests/fixtures/test_file_downloaded.jpeg')
+        assert filecmp.cmp(image_file_path, 'tests/fixtures/test_file2.jpg', shallow=True)
+        assert filecmp.cmp(image_file_path, 'tests/fixtures/test_file2.jpg', shallow=False)
 
 
 def test_change_img_links_and_save():
-    page_url = 'https://en.wikipedia.org/wiki/Main_Page#'
-    with open('fixtures/page.htm') as test_page:
+    page_url = 'https://en.wikipedia.org/wiki/Main_Page'
+    with open('tests/fixtures/page.html') as test_page:
         test_html = test_page.read()
     soup = BeautifulSoup(test_html, 'html.parser')
     with tempfile.TemporaryDirectory() as tmpdir_for_test:
         soup = change_img_links_and_save(soup, page_url, tmpdir_for_test)
-    with open('fixtures/page_with_new_img_paths.html') as test_page:
+    with open('tests/fixtures/page_with_new_img_paths.html') as test_page:
         correct_html = test_page.read()
     assert correct_html == soup.prettify(formatter="html5")
