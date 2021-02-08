@@ -1,7 +1,7 @@
 import os
 from page_loader.page_loader import make_page_file_name
 from page_loader.page_loader import is_dir_exist
-#from page_loader.page_loader import download
+# from page_loader.page_loader import download
 from page_loader.page_loader import make_image_file_name
 from page_loader.page_loader import make_dir_with_files_name
 from page_loader.page_loader import make_kebab_case_name
@@ -11,6 +11,7 @@ from page_loader.page_loader import change_img_links_and_save
 import tempfile
 import requests_mock
 from bs4 import BeautifulSoup
+import filecamp
 
 
 def test_make_page_file_name():
@@ -60,11 +61,14 @@ def test_make_image_url_absolut():
 
 
 def test_save_image():
-    img_url = 'https://en.wikipedia.org/wiki/Main_Page#/media/File:RE_Kaja_Kallas.jpg'
+    img_url = 'https://en.wikipedia.org/wiki/Elizabeth_Raffald#/media/File:Elizabeth_Raffald_(cropped).jpg'
+
     with tempfile.TemporaryDirectory() as tmpdir_for_test:
         image_file_path = os.path.join(tmpdir_for_test, 'test.jpeg')
         save_image(img_url, image_file_path)
         assert os.path.isfile(image_file_path)
+        assert filecmp.cmp(image_file_path, '/fixtures/test_file.jpg', shallow=True)
+        assert filecmp.cmp(image_file_path, '/fixtures/test_file.jpg', shallow=False)
 
 
 def test_change_img_links_and_save():
