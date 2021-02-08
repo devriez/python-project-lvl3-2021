@@ -12,7 +12,6 @@ import tempfile
 import requests_mock
 from bs4 import BeautifulSoup
 import filecmp
-# import webbrowser
 
 
 def test_make_page_file_name():
@@ -69,9 +68,6 @@ def test_save_image():
         save_image(img_url, image_file_path)
         save_image(img_url, 'tests/fixtures/test_file_downloaded.jpeg')
         assert os.path.isfile(image_file_path)
-      #  print("Текущая деректория:", os.getcwd())
-      #  os.system('tests/fixtures/test_file2.jpg')
-      #  webbrowser.open('tests/fixtures/test_file_downloaded.jpeg')
         assert filecmp.cmp(image_file_path, 'tests/fixtures/test_file2.jpg', shallow=True)
         assert filecmp.cmp(image_file_path, 'tests/fixtures/test_file2.jpg', shallow=False)
 

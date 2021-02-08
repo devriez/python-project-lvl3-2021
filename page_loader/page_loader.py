@@ -21,7 +21,7 @@ def download(page_url, output_dir):
         return page_file_path
 
 
-# тест написан
+# test written
 def make_page_file_name(page_address):
     netloc = urlparse(page_address).netloc
     path = urlparse(page_address).path
@@ -37,13 +37,10 @@ def make_path(name, root_dir):
     return path
 
 
-# тест написан
+# test written
 def make_dir_with_files_name(page_address):
-    print('page_address', page_address)
     netloc = urlparse(page_address).netloc
-    print('netloc', netloc)
     path = urlparse(page_address).path
-    print('path', path)
     splitted_netloc = netloc.split('.')
     netloc_kebab_case = '-'.join(splitted_netloc)
     splitted_address = (netloc_kebab_case + path).split('/')
@@ -51,12 +48,12 @@ def make_dir_with_files_name(page_address):
     return dir_name
 
 
-# тест написан
+# test written
 def is_dir_exist(output_dir):
     return os.path.exists(output_dir) and os.path.isdir(output_dir)
 
 
-# тест написан
+# test written
 def make_kebab_case_name(name):
     if name[0] == '/':
         name = name[1:]
@@ -86,7 +83,9 @@ def make_image_file_name(page_address, image_path):
 
 # test written
 def make_image_url_absolut(page_url, image_url_relative):
-    domain_with_scheme = urlparse(page_url).scheme + '://' + urlparse(page_url).netloc
+    domain_with_scheme = (
+            urlparse(page_url).scheme + '://' + urlparse(page_url).netloc
+    )
     return domain_with_scheme + image_url_relative
 
 
@@ -97,18 +96,16 @@ def save_image(img_url, img_path):
         out.write(p.content)
 
 
+# test written
 def change_img_links_and_save(soup, page_url, output_dir):
     dir_with_files_name = make_dir_with_files_name(page_url)
-    print('dir_with_files_name', dir_with_files_name)
     dir_with_files_path = make_path(dir_with_files_name, output_dir)
     os.mkdir(dir_with_files_path)
     for image_tag in soup.find_all('img'):
         image_url_relative = image_tag.get('src')
         if len(urlparse(image_url_relative).netloc) == 0:
             img_url = make_image_url_absolut(page_url, image_url_relative)
-            print('img_url', img_url)
             img_file_name = make_image_file_name(page_url, image_url_relative)
-            print('img_file_name', img_file_name)
             img_path = make_path(img_file_name, dir_with_files_path)
             save_image(img_url, img_path)
             image_tag['src'] = make_path(img_file_name, dir_with_files_name)
