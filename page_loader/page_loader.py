@@ -115,8 +115,8 @@ def change_links_and_save(soup, page_url, output_dir):
                 or
                 urlparse(resource_link).netloc == urlparse(page_url).netloc
         ):
-            resource_url = make_url(page_url, resource_link)
-            resource_file_name = make_file_name(page_url, resource_link)
+            resource_url = make_url(page_url, urlparse(resource_link).path)
+            resource_file_name = make_file_name(page_url, urlparse(resource_link).path)
             source_path = make_path(resource_file_name, dir_with_files_path)
             save_image(resource_url, source_path)
             resource_tag[src_or_href] = make_path(resource_file_name, dir_with_files_name)
