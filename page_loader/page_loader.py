@@ -119,7 +119,7 @@ def change_links_and_save(soup, page_url, output_dir):
             resource_file_name = make_file_name(page_url, resource_link)
             source_path = make_path(resource_file_name, dir_with_files_path)
             save_image(resource_url, source_path)
-            resource_tag['src'] = make_path(resource_file_name, dir_with_files_name)
+            resource_tag[src_or_href] = make_path(resource_file_name, dir_with_files_name)
     return soup
 
 

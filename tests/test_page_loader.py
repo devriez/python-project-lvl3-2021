@@ -2,7 +2,7 @@ import os
 from page_loader.page_loader import make_page_file_name
 from page_loader.page_loader import is_dir_exist
 # from page_loader.page_loader import download
-from page_loader.page_loader import make_image_file_name
+from page_loader.page_loader import make_file_name
 from page_loader.page_loader import make_dir_with_files_name
 from page_loader.page_loader import make_kebab_case_name
 from page_loader.page_loader import make_url
@@ -44,8 +44,8 @@ def test_make_kebab_case_name():
     assert CORRECT_KEBAB_CASE_NAME == make_kebab_case_name(NAME)
 
 
-def test_make_image_file_name():
-    path_to_image = make_image_file_name(
+def test_make_file_name():
+    path_to_image = make_file_name(
         'https://ru.hexlet.io/courses', '/assets/professions/nodejs.png'
     )
     correct_path_to_image = 'ru-hexlet-io-assets-professions-nodejs.png'
