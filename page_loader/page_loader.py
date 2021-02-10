@@ -13,7 +13,7 @@ def download(page_url, output_dir):
         page_file_path = make_path(page_file_name, output_dir)
 
         soup = BeautifulSoup(html_doc, 'html.parser')
-        soup = change_img_links_and_save(soup, page_url, output_dir)
+        soup = change_links_and_save(soup, page_url, output_dir)
 
         with open(page_file_path, "w") as f:
             f.write(soup.prettify(formatter="html5"))
@@ -73,7 +73,7 @@ def read_page(url):
 
 
 # test written
-def make_image_file_name(page_address, image_path):
+def make_file_name(page_address, image_path):
     domain_kebab_case = make_domain_kebab_case_name(page_address)
     image_path_without_ext, extension = os.path.splitext(image_path)
     image_path_kebab_case = make_kebab_case_name(image_path_without_ext)
@@ -82,11 +82,11 @@ def make_image_file_name(page_address, image_path):
 
 
 # test written
-def make_image_url_absolut(page_url, image_url_relative):
+def make_url(page_url, link):
     domain_with_scheme = (
             urlparse(page_url).scheme + '://' + urlparse(page_url).netloc
     )
-    return domain_with_scheme + image_url_relative
+    return domain_with_scheme + urlparse(link).path
 
 
 # test written
@@ -97,16 +97,36 @@ def save_image(img_url, img_path):
 
 
 # test written
-def change_img_links_and_save(soup, page_url, output_dir):
+def change_links_and_save(soup, page_url, output_dir):
+
     dir_with_files_name = make_dir_with_files_name(page_url)
     dir_with_files_path = make_path(dir_with_files_name, output_dir)
     os.mkdir(dir_with_files_path)
-    for image_tag in soup.find_all('img'):
-        image_url_relative = image_tag.get('src')
-        if len(urlparse(image_url_relative).netloc) == 0:
-            img_url = make_image_url_absolut(page_url, image_url_relative)
-            img_file_name = make_image_file_name(page_url, image_url_relative)
-            img_path = make_path(img_file_name, dir_with_files_path)
-            save_image(img_url, img_path)
-            image_tag['src'] = make_path(img_file_name, dir_with_files_name)
+
+    for resource_tag in soup.find_all(['link', 'script', 'img']):
+        src_or_href = choose_src_or_href_attribute(resource_tag)
+        if not src_or_href:
+            continue
+
+        resource_link = resource_tag.get(src_or_href)
+
+        if (
+                not urlparse(resource_link).netloc
+                or
+                urlparse(resource_link).netloc == urlparse(page_url).netloc
+        ):
+            resource_url = make_url(page_url, resource_link)
+            resource_file_name = make_file_name(page_url, resource_link)
+            source_path = make_path(resource_file_name, dir_with_files_path)
+            save_image(resource_url, source_path)
+            resource_tag['src'] = make_path(resource_file_name, dir_with_files_name)
     return soup
+
+
+def choose_src_or_href_attribute(tag):
+    if tag.get('src'):
+        return 'src'
+    if tag.get('href'):
+        return 'href'
+    else:
+        return False

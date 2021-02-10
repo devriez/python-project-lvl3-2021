@@ -5,9 +5,9 @@ from page_loader.page_loader import is_dir_exist
 from page_loader.page_loader import make_image_file_name
 from page_loader.page_loader import make_dir_with_files_name
 from page_loader.page_loader import make_kebab_case_name
-from page_loader.page_loader import make_image_url_absolut
+from page_loader.page_loader import make_url
 from page_loader.page_loader import save_image
-from page_loader.page_loader import change_img_links_and_save
+from page_loader.page_loader import change_links_and_save
 import tempfile
 import requests_mock
 from bs4 import BeautifulSoup
@@ -22,7 +22,7 @@ def test_make_page_file_name():
 
 def test_make_dir_with_files_name():
     CORRECT_NAME_DIR_WITH_IMAGES = 'ru-hexlet-io-courses_files'
-    file_name =  'https://ru.hexlet.io/courses'
+    file_name = 'https://ru.hexlet.io/courses'
     assert CORRECT_NAME_DIR_WITH_IMAGES == make_dir_with_files_name(file_name)
 
 
@@ -56,12 +56,15 @@ def test_make_image_url_absolut():
     CORRECT_IMAGE_URL_ABSOLUTE = 'https://ru.hexlet.io/assets/professions/nodejs.png'
     PAGE_URL = 'https://ru.hexlet.io/courses'
     IMAGE_PATH = '/assets/professions/nodejs.png'
-    img_url_absolut = make_image_url_absolut(PAGE_URL, IMAGE_PATH)
+    img_url_absolut = make_url(PAGE_URL, IMAGE_PATH)
     assert CORRECT_IMAGE_URL_ABSOLUTE == img_url_absolut
 
 
 def test_save_image():
-    img_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Elizabeth_Raffald_%28cropped%29.jpg/800px-Elizabeth_Raffald_%28cropped%29.jpg'
+    img_url = (
+        f'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Elizabeth_Raffald_%28cropped%29.jpg/'
+        f'800px-Elizabeth_Raffald_%28cropped%29.jpg'
+    )
 
     with tempfile.TemporaryDirectory() as tmpdir_for_test:
         image_file_path = os.path.join(tmpdir_for_test, 'test.jpeg')
@@ -72,13 +75,13 @@ def test_save_image():
         assert filecmp.cmp(image_file_path, 'tests/fixtures/test_file2.jpg', shallow=False)
 
 
-def test_change_img_links_and_save():
+def test_change_links_and_save():
     page_url = 'https://en.wikipedia.org/wiki/Main_Page'
     with open('tests/fixtures/page.html') as test_page:
         test_html = test_page.read()
     soup = BeautifulSoup(test_html, 'html.parser')
     with tempfile.TemporaryDirectory() as tmpdir_for_test:
-        soup = change_img_links_and_save(soup, page_url, tmpdir_for_test)
+        soup = change_links_and_save(soup, page_url, tmpdir_for_test)
     with open('tests/fixtures/page_with_new_img_paths.html') as test_page:
         correct_html = test_page.read()
     assert correct_html == soup.prettify(formatter="html5")
