@@ -12,6 +12,11 @@ import tempfile
 import requests_mock
 from bs4 import BeautifulSoup
 import filecmp
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG
+)
 
 
 def test_make_page_file_name():

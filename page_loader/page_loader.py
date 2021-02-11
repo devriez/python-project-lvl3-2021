@@ -3,6 +3,11 @@ import requests
 from urllib.parse import urlparse
 import re
 from bs4 import BeautifulSoup
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG
+)
 
 
 def download(page_url, output_dir):

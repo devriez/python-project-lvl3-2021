@@ -3,6 +3,12 @@
 import argparse
 import os
 from page_loader.page_loader import download
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG
+)
+
 
 
 def main():
