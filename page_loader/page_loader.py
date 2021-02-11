@@ -3,24 +3,26 @@ import requests
 from urllib.parse import urlparse
 import re
 from bs4 import BeautifulSoup
-import logging
+from page_loader.app_logger import get_logger
 
-logging.basicConfig(
-    level=logging.DEBUG
-)
+logger = get_logger(__name__)
 
 
 def download(page_url, output_dir):
+    logger.info(f'start func with page_url:{page_url},output_dir:{output_dir}')
     if is_dir_exist(output_dir):
         html_doc = read_page(page_url)
 
         page_file_name = make_page_file_name(page_url)
         page_file_path = make_path(page_file_name, output_dir)
+        logger.info(f'page_file_path {page_file_path}')
 
         soup = BeautifulSoup(html_doc, 'html.parser')
+        logger.info('change links and save soup starts')
         soup = change_links_and_save(soup, page_url, output_dir)
 
         with open(page_file_path, "w") as f:
+            logger.info('starts to write result file')
             f.write(soup.prettify(formatter="html5"))
 
         return page_file_path
@@ -103,12 +105,15 @@ def save_image(img_url, img_path):
 
 # test written
 def change_links_and_save(soup, page_url, output_dir):
-
+    logger.info('start change_links_and_save')
     dir_with_files_name = make_dir_with_files_name(page_url)
     dir_with_files_path = make_path(dir_with_files_name, output_dir)
+    logger.info(f'dir_with_files_path {dir_with_files_path}')
     os.mkdir(dir_with_files_path)
 
     for resource_tag in soup.find_all(['link', 'script', 'img']):
+        logger.info('starts loop in tags')
+        logger.ingo(f'resource_tag {resource_tag}')
         src_or_href = choose_src_or_href_attribute(resource_tag)
         if not src_or_href:
             continue
@@ -125,6 +130,8 @@ def change_links_and_save(soup, page_url, output_dir):
             source_path = make_path(resource_file_name, dir_with_files_path)
             save_image(resource_url, source_path)
             resource_tag[src_or_href] = make_path(resource_file_name, dir_with_files_name)
+    logger.info('return soup')
+    logger.warning('check warning')
     return soup
 
 
