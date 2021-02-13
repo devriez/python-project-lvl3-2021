@@ -108,12 +108,12 @@ def change_links_and_save(soup, page_url, output_dir):
     logger.info('start change_links_and_save')
     dir_with_files_name = make_dir_with_files_name(page_url)
     dir_with_files_path = make_path(dir_with_files_name, output_dir)
-    logger.info(f'dir_with_files_path {dir_with_files_path}')
+    logger.warning(f'dir_with_files_path {dir_with_files_path}')
     os.mkdir(dir_with_files_path)
 
     for resource_tag in soup.find_all(['link', 'script', 'img']):
         logger.info('starts loop in tags')
-        logger.ingo(f'resource_tag {resource_tag}')
+        logger.info(f'resource_tag {resource_tag}')
         src_or_href = choose_src_or_href_attribute(resource_tag)
         if not src_or_href:
             continue
