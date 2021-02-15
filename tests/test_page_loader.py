@@ -1,7 +1,7 @@
 import os
 from page_loader.name_and_path_makers import make_page_file_name, make_dir_with_files_name, make_kebab_case_name, \
-    make_file_name, make_url
-from page_loader.file_interactors import is_dir_exist, change_links_and_save
+    make_file_name, make_url, make_path
+from page_loader.file_interactors import is_dir_exist, change_links_and_save, read_source, save_in_file
 # from page_loader.page_loader import download
 # save_image
 import tempfile
@@ -61,27 +61,31 @@ def test_make_image_url_absolut():
     assert CORRECT_IMAGE_URL_ABSOLUTE == img_url_absolut
 
 
-# def test_save_image():
-#     img_url = (
-#         f'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Elizabeth_Raffald_%28cropped%29.jpg/'
-#         f'800px-Elizabeth_Raffald_%28cropped%29.jpg'
-#     )
-#
-#     with tempfile.TemporaryDirectory() as tmpdir_for_test:
-#         image_file_path = os.path.join(tmpdir_for_test, 'test.jpeg')
-#         save_image(img_url, image_file_path)
-#         save_image(img_url, 'tests/fixtures/test_file_downloaded.jpeg')
-#         assert os.path.isfile(image_file_path)
-#         assert filecmp.cmp(image_file_path, 'tests/fixtures/test_file2.jpg', shallow=True)
-#         assert filecmp.cmp(image_file_path, 'tests/fixtures/test_file2.jpg', shallow=False)
+def test_save_image():
+    img_url = (
+        f'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Elizabeth_Raffald_%28cropped%29.jpg/'
+        f'800px-Elizabeth_Raffald_%28cropped%29.jpg'
+    )
+
+    with tempfile.TemporaryDirectory() as tmpdir_for_test:
+        img_doc = read_source(img_url)
+        image_file_path = os.path.join(tmpdir_for_test, 'test.jpeg')
+        save_in_file(image_file_path, img_doc)
+
+        assert os.path.isfile(image_file_path)
+        assert filecmp.cmp(image_file_path, 'tests/fixtures/test_file2.jpg', shallow=True)
+        assert filecmp.cmp(image_file_path, 'tests/fixtures/test_file2.jpg', shallow=False)
 
 
 def test_change_links_and_save():
-    page_url = 'https://en.wikipedia.org/wiki/Main_Page'
+    page_url = 'https://cdn2.hexlet.io/packs'
     with open('tests/fixtures/page.html') as test_page:
         test_html = test_page.read()
-    with tempfile.TemporaryDirectory() as tmpdir_for_test:
-        soup = change_links_and_save(test_html, page_url, tmpdir_for_test)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        dir_with_files_name = make_dir_with_files_name(page_url)
+        dir_with_files_path = make_path(dir_with_files_name, tmpdir)
+        os.mkdir(dir_with_files_path)
+        result_html = change_links_and_save(test_html, page_url, tmpdir)
     with open('tests/fixtures/page_with_new_img_paths.html') as test_page:
         correct_html = test_page.read()
-    assert correct_html == soup.prettify(formatter="html5")
+    assert correct_html == result_html

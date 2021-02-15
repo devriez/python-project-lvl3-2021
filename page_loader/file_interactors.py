@@ -16,7 +16,7 @@ def is_dir_exist(output_dir):
 
 def save_in_file(page_file_path, content):
     try:
-        with open(page_file_path, "w") as f:
+        with open(page_file_path, "wb") as f:
             f.write(content)
     except OSError as error:
         logger.critical(error)
@@ -26,19 +26,19 @@ def save_in_file(page_file_path, content):
 def read_page(url):
     try:
         page = requests.get(url)
-        return page.text
     except requests.exceptions.RequestException as error:
         logger.critical(error)
         raise requests.exceptions.RequestException()
+    return page.txt
 
 
 def read_source(source_url):
     try:
         p = requests.get(source_url)
-        return p.content
     except requests.exceptions.RequestException as error:
         logger.critical(error)
         raise requests.exceptions.RequestException()
+    return p.content
 
 
 def change_links_and_save(html_doc, page_url, output_dir):
