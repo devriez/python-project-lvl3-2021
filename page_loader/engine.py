@@ -15,7 +15,7 @@ def download(page_url, output_dir):
     :param output_dir: directory to save page and sources
     :return: path to page saved locally
     '''
-    logger.info(f'start func with page_url:{page_url},output_dir:{output_dir}')
+    logger.info(f'start func with page_url:{page_url}, output_dir:{output_dir}')
 
     if not is_dir_exist(output_dir):
         logger.worning("An output directory doesn't exist!")

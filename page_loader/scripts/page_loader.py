@@ -23,11 +23,14 @@ def main():
 
     try:
         return download(args.url, args.output)
-    except requests.exceptions.RequestException:
+    except requests.exceptions.RequestException as error:
+        logger.critical(error)
         sys.exit(1)
-    except OSError:
+    except OSError as error:
+        logger.critical(error)
         sys.exit(1)
-    except KeyboardInterrupt:
+    except KeyboardInterrupt as error:
+        logger.critical(error)
         sys.exit(1)
 
 
