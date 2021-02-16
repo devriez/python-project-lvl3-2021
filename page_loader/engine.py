@@ -48,5 +48,5 @@ def download(page_url, output_dir):
 
     logger.info('saving html with local links')
     save_page(page_file_path, html_with_local_links)
-
+    logger.info('html with local links saved')
     return page_file_path
