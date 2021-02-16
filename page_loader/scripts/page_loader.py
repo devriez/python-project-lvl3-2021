@@ -17,7 +17,7 @@ def main():
     logger.info('start process')
     parser = argparse.ArgumentParser(description='Download page')
     parser.add_argument('url', type=str)
-    parser.add_argument('--output', help='set path for output', type=str,
+    parser.add_argument('-o', '--output', help='set path for output', type=str,
                         default=os.getcwd())
     args = parser.parse_args()
 
@@ -34,6 +34,7 @@ def main():
         sys.exit(1)
 
     return result_file_path
+
 
 if __name__ == '__main__':
     main()
