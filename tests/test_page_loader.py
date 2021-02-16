@@ -1,7 +1,7 @@
 import os
 from page_loader.name_and_path_makers import make_page_file_name, make_dir_with_files_name, make_kebab_case_name, \
     make_file_name, make_url, make_path
-from page_loader.file_interactors import is_dir_exist, change_links_and_save, read_source, save_in_file
+from page_loader.file_interactors import is_dir_exist, change_links_and_save, read_source, save_file
 # from page_loader.page_loader import download
 # save_image
 import tempfile
@@ -70,7 +70,7 @@ def test_save_image():
     with tempfile.TemporaryDirectory() as tmpdir_for_test:
         img_doc = read_source(img_url)
         image_file_path = os.path.join(tmpdir_for_test, 'test.jpeg')
-        save_in_file(image_file_path, img_doc)
+        save_file(image_file_path, img_doc)
 
         assert os.path.isfile(image_file_path)
         assert filecmp.cmp(image_file_path, 'tests/fixtures/test_file2.jpg', shallow=True)

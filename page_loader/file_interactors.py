@@ -13,12 +13,43 @@ logger = get_logger(__name__)
 
 
 def is_dir_exist(output_dir):
+    '''
+    Check is directory exist
+    :param
+        output_dir: directory path
+    :return: True of False
+    '''
     return os.path.exists(output_dir) and os.path.isdir(output_dir)
 
 
-def save_in_file(page_file_path, content):
+def save_file(destination_path, content):
+    '''
+    Saving source content to file
+    :param
+        destination_path: file path
+        content: source content
+    :return:
+        None
+    '''
     try:
-        with open(page_file_path, "wb") as f:
+        with open(destination_path, "wb") as f:
+            f.write(content)
+    except OSError as error:
+        logger.critical(error)
+        raise OSError()
+
+
+def save_page(page_file_path, content):
+    '''
+    Saving page content to file
+    :param
+        destination_path: file path
+        content: page content (html)
+    :return:
+        None
+    '''
+    try:
+        with open(page_file_path, "w") as f:
             f.write(content)
     except OSError as error:
         logger.critical(error)
@@ -26,6 +57,13 @@ def save_in_file(page_file_path, content):
 
 
 def read_page(url):
+    '''
+    Read page
+    :param
+        url: page url
+    :return:
+        page.text - page text(html)
+    '''
     try:
         page = requests.get(url)
     except requests.exceptions.RequestException as error:
@@ -35,6 +73,12 @@ def read_page(url):
 
 
 def read_source(source_url):
+    '''
+    Read page with source
+    :param
+        source_url: url with source
+    :return: p.content - source content
+    '''
     try:
         p = requests.get(source_url)
     except requests.exceptions.RequestException as error:
@@ -44,6 +88,13 @@ def read_source(source_url):
 
 
 def change_links_and_save(html_doc, page_url, output_dir):
+    '''
+    Change source links in tags in html. links - saved locally source files
+    :param html_doc: page html text
+    :param page_url: page url
+    :param output_dir: directory to save page html with new sources links
+    :return: html with local links
+    '''
     logger.info('making soup')
     soup = BeautifulSoup(html_doc, 'html.parser')
     logger.info('making dir with files name and path')
@@ -71,17 +122,17 @@ def change_links_and_save(html_doc, page_url, output_dir):
                 urlparse(source_link).netloc == urlparse(page_url).netloc
         ):
             source_url = make_url(page_url, urlparse(source_link).path)
-            logger.debug(f'source_url {source_url}')
+            logger.debug(f'done source_url {source_url}')
             source_file_name = make_file_name(page_url,
                                               urlparse(source_link).path)
-            logger.debug(f'source_file_name {source_file_name}')
+            logger.debug(f'done source_file_name {source_file_name}')
 
             source_path = make_path(source_file_name, dir_with_files_path)
-            logger.debug(f'source_path {source_path}')
+            logger.debug(f'done source_path {source_path}')
             logger.info(f'read source')
             source_content = read_source(source_url)
             logger.debug(f'saving source in file')
-            save_in_file(source_path, source_content)
+            save_file(source_path, source_content)
 
             logger.debug(f'saving source_tag')
             source_tag[src_or_href] = make_path(source_file_name,
