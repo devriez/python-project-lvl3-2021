@@ -22,7 +22,7 @@ def main():
     args = parser.parse_args()
 
     try:
-        return download(args.url, args.output)
+        result_file_path = download(args.url, args.output)
     except requests.exceptions.RequestException as error:
         logger.critical(error)
         sys.exit(1)
@@ -33,6 +33,7 @@ def main():
         logger.critical(error)
         sys.exit(1)
 
+    return result_file_path
 
 if __name__ == '__main__':
     main()
