@@ -22,8 +22,8 @@ def main():
     args = parser.parse_args()
 
     try:
-        download(args.url, args.output)
-    #    return result_file_path
+        result_file_path = download(args.url, args.output)
+        return result_file_path
     except requests.exceptions.RequestException as error:
         logger.critical(error)
         sys.exit(3)
@@ -33,7 +33,6 @@ def main():
     except KeyboardInterrupt as error:
         logger.critical(error)
         sys.exit(1)
-
 
 if __name__ == '__main__':
     main()
