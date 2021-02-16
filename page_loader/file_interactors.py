@@ -5,7 +5,8 @@ import requests
 from bs4 import BeautifulSoup
 
 from page_loader.logger import get_logger
-from page_loader.name_and_path_makers import make_dir_with_files_name, make_path, make_url, make_file_name
+from page_loader.name_and_path_makers import make_dir_with_files_name, \
+    make_path, make_url, make_file_name
 
 from progress.bar import Bar
 
@@ -129,12 +130,12 @@ def change_links_and_save(html_doc, page_url, output_dir):
 
             source_path = make_path(source_file_name, dir_with_files_path)
             logger.debug(f'done source_path {source_path}')
-            logger.info(f'read source')
+            logger.info('read source')
             source_content = read_source(source_url)
-            logger.debug(f'saving source in file')
+            logger.debug('saving source in file')
             save_file(source_path, source_content)
 
-            logger.debug(f'saving source_tag')
+            logger.debug('saving source_tag')
             source_tag[src_or_href] = make_path(source_file_name,
                                                 dir_with_files_name)
             logger.debug(f'source_tag: {source_tag}')

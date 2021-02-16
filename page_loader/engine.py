@@ -1,7 +1,9 @@
 import os
 from page_loader.logger import get_logger
-from page_loader.file_interactors import is_dir_exist, save_page, read_page, change_links_and_save
-from page_loader.name_and_path_makers import make_page_file_name, make_path, make_dir_with_files_name
+from page_loader.file_interactors import \
+    is_dir_exist, save_page, read_page, change_links_and_save
+from page_loader.name_and_path_makers import \
+    make_page_file_name, make_path, make_dir_with_files_name
 
 logger = get_logger(__name__)
 
@@ -19,10 +21,10 @@ def download(page_url, output_dir):
         logger.worning("An output directory doesn't exist!")
         raise NameError('Missing directory')
 
-    logger.info(f'reading page')
+    logger.info('reading page')
     html_doc = read_page(page_url)
 
-    logger.info(f'making page_file_name and page_file_path')
+    logger.info('making page_file_name and page_file_path')
     page_file_name = make_page_file_name(page_url)
     page_file_path = make_path(page_file_name, output_dir)
     logger.info(f'{page_file_name} and {page_file_path}')
@@ -39,7 +41,7 @@ def download(page_url, output_dir):
         logger.critical(error)
         raise OSError()
 
-    logger.info(f'changing links and saving')
+    logger.info('changing links and saving')
     logger.info(f'page_url {page_url} and output_dir {output_dir}')
     html_with_local_links = change_links_and_save(html_doc, page_url,
                                                   output_dir)

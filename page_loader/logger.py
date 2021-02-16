@@ -1,8 +1,8 @@
 import logging
 # import sys
 
-_log_format = (f"%(asctime)s - [%(levelname)s] - %(name)s -"
-               f" (%(filename)s).%(funcName)s - %(message)s")
+_log_format = ("%(asctime)s - [%(levelname)s] - %(name)s -"
+               " (%(filename)s).%(funcName)s - %(message)s")
 
 
 # def get_file_handler():
