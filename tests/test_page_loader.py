@@ -5,8 +5,8 @@ from page_loader.file_interactors import is_dir_exist, change_links_and_save, re
 # from page_loader.page_loader import download
 # save_image
 import tempfile
-import requests_mock
-from bs4 import BeautifulSoup
+# import requests_mock
+# from bs4 import BeautifulSoup
 import filecmp
 import logging
 
@@ -63,8 +63,8 @@ def test_make_image_url_absolut():
 
 def test_save_image():
     img_url = (
-        f'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Elizabeth_Raffald_%28cropped%29.jpg/'
-        f'800px-Elizabeth_Raffald_%28cropped%29.jpg'
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Elizabeth_Raffald_%28cropped%29.jpg/'
+        '800px-Elizabeth_Raffald_%28cropped%29.jpg'
     )
 
     with tempfile.TemporaryDirectory() as tmpdir_for_test:

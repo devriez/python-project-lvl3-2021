@@ -121,8 +121,7 @@ def change_links_and_save(html_doc, page_url, output_dir):
         logger.debug(f'source_link {source_link}')
         if (
                 not urlparse(source_link).netloc
-                or
-                urlparse(source_link).netloc == urlparse(page_url).netloc
+                or urlparse(source_link).netloc == urlparse(page_url).netloc
         ):
             source_url = make_url(page_url, urlparse(source_link).path)
             logger.debug(f'done source_url {source_url}')

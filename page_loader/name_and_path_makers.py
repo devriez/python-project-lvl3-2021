@@ -75,6 +75,5 @@ def make_url(page_url, link):
     :return: source absolute url
     '''
     domain_with_scheme = (
-            urlparse(page_url).scheme + '://' + urlparse(page_url).netloc
-    )
+            urlparse(page_url).scheme + '://' + urlparse(page_url).netloc)
     return domain_with_scheme + urlparse(link).path
