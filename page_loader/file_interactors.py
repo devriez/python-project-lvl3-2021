@@ -67,6 +67,7 @@ def read_page(url):
     '''
     try:
         page = requests.get(url)
+        page.raise_for_status()
     except requests.exceptions.RequestException as error:
         logger.critical(error)
         raise requests.exceptions.RequestException()
@@ -82,6 +83,7 @@ def read_source(source_url):
     '''
     try:
         p = requests.get(source_url)
+        p.raise_for_status()
     except requests.exceptions.RequestException as error:
         logger.critical(error)
         raise requests.exceptions.RequestException()

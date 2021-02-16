@@ -26,10 +26,10 @@ def main():
         return result_file_path
     except requests.exceptions.RequestException as error:
         logger.critical(error)
-        sys.exit(1)
+        sys.exit(3)
     except OSError as error:
         logger.critical(error)
-        sys.exit(1)
+        sys.exit(2)
     except KeyboardInterrupt as error:
         logger.critical(error)
         sys.exit(1)
