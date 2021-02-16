@@ -59,10 +59,12 @@ def make_domain_kebab_case_name(url):
 
 def make_file_name(page_url, image_path):
     domain_kebab_case = make_domain_kebab_case_name(page_url)
-    image_path_without_ext, extension = os.path.splitext(image_path)
-    image_path_kebab_case = make_kebab_case_name(image_path_without_ext)
-    image_name = domain_kebab_case + '-' + image_path_kebab_case + extension
-    return image_name
+    source_path_without_ext, extension = os.path.splitext(image_path)
+    source_path_kebab_case = make_kebab_case_name(source_path_without_ext)
+    if not extension:
+        extension = '.html'
+    source_name = domain_kebab_case + '-' + source_path_kebab_case + extension
+    return source_name
 
 
 def make_url(page_url, link):

@@ -131,6 +131,7 @@ def change_links_and_save(html_doc, page_url, output_dir):
             source_path = make_path(source_file_name, dir_with_files_path)
             logger.debug(f'done source_path {source_path}')
             logger.info('read source')
+
             source_content = read_source(source_url)
             logger.debug('saving source in file')
             save_file(source_path, source_content)
