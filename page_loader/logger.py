@@ -1,5 +1,5 @@
 import logging
-import sys
+# import sys
 
 _log_format = ("%(asctime)s - [%(levelname)s] - %(name)s -"
                " (%(filename)s).%(funcName)s - %(message)s")
