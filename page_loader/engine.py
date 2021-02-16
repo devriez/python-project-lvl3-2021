@@ -46,7 +46,7 @@ def download(page_url, output_dir):
     html_with_local_links = change_links_and_save(html_doc, page_url,
                                                   output_dir)
 
-    logger.ingo('saving html with local links')
+    logger.info('saving html with local links')
     save_page(page_file_path, html_with_local_links)
 
     return page_file_path
