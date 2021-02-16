@@ -103,7 +103,7 @@ def change_links_and_save(html_doc, page_url, output_dir):
     logger.info('making dir with files name and path')
     dir_with_files_name = make_dir_with_files_name(page_url)
     dir_with_files_path = make_path(dir_with_files_name, output_dir)
-    logger.warning(f'{dir_with_files_name} and {dir_with_files_path}')
+    logger.info(f'{dir_with_files_name} and {dir_with_files_path}')
 
     logger.info('starts loop in tags')
     tag_list = soup.find_all(['link', 'script', 'img'])

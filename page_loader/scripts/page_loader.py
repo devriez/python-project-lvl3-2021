@@ -23,7 +23,7 @@ def main():
 
     try:
         result_file_path = download(args.url, args.output)
-        return result_file_path
+    #    return result_file_path
     except requests.exceptions.RequestException as error:
         logger.critical(error)
         sys.exit(3)
