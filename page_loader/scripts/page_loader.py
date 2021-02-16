@@ -22,7 +22,7 @@ def main():
     args = parser.parse_args()
 
     try:
-        result_file_path = download(args.url, args.output)
+        download(args.url, args.output)
     #    return result_file_path
     except requests.exceptions.RequestException as error:
         logger.critical(error)
