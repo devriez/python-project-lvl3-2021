@@ -31,10 +31,11 @@ def test_is_dir_exist():
 
 def test_download(requests_mock):
     with tempfile.TemporaryDirectory() as tmpdir_for_test:
-        requests_mock.get('https://ru.hexlet.io/courses', text='data')
-        file_path = download('https://ru.hexlet.io/courses', tmpdir_for_test)
-        with open(file_path) as file:
-            assert 'data\n' == file.read()
+        with requests_mock.Mocker() as mock:
+            mock.get('https://ru.hexlet.io/courses', text='data')
+            file_path = download('https://ru.hexlet.io/courses', tmpdir_for_test)
+            with open(file_path) as file:
+                assert 'data\n' == file.read()
 
 
 def test_make_kebab_case_name():
