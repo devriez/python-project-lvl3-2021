@@ -13,3 +13,4 @@ pip install git+https://github.com/devriez/python-project-lvl3
 page-loader URL -o PATH
 ```
 ## Use asciinema
+[![asciicast](https://asciinema.org/a/VrZOUr2zK8vtCA6sjaUq8vQwO.svg)](https://asciinema.org/a/VrZOUr2zK8vtCA6sjaUq8vQwO)
