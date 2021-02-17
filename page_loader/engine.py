@@ -36,7 +36,7 @@ def download(page_url, output_dir):
 
     logger.info('making dir with files')
     try:
-        os.mkdir(dir_with_files_path)
+        os.makedirs(dir_with_files_path)
     except OSError as error:
         logger.critical(error)
         raise OSError()
