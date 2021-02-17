@@ -29,7 +29,7 @@ def test_is_dir_exist():
     assert is_dir_exist(os.getcwd()) is True
 
 
-def test_download(requests_mock):
+def test_download():
     with tempfile.TemporaryDirectory() as tmpdir_for_test:
         requests_mock.get('https://ru.hexlet.io/courses', text='data')
         file_path = download('https://ru.hexlet.io/courses', tmpdir_for_test)
